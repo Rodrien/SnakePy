@@ -44,10 +44,15 @@ def main():
                 if event.key == py.K_RIGHT:
                     direction = 'right'
         sCoord = movement(direction,sCoord)
-        apple = point(apple,sCoord)
-        drawApple(apple)
+        drawApple(apple,sCoord)
         drawSnake(sCoord)
         colide(sCoord)
+        apple = point(apple,sCoord)
+        #controlls if apple coordinates is in snake
+        for coord in sCoord:
+            if(apple == coord):
+                apple = getRandom()
+
         py.display.update()
 
 #draw grid
@@ -64,16 +69,17 @@ def drawSnake(snakeCoord):
         py.draw.rect(screen,(0,255,0),snakeRect)
 
 #draw apple
-def drawApple(pos): 
+def drawApple(pos,snakeCoord):
     applerect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
     py.draw.rect(screen,(255,0,0),applerect)
 
 #point
 def point(apple,snakeCoord):
     if(apple == snakeCoord[0]):
+        snakeCoord.insert(0,apple)
         fixBlock(apple)
         apple = getRandom()
-
+    #add point
     return apple
 
 #colisions
@@ -83,7 +89,10 @@ def colide(snakeCoord):
     y = head['y']
     if(x > 19 or y > 19 or x < 0 or y < 0):
         py.quit()
-
+    for i in range(len(snakeCoord)-1):
+        if (head == snakeCoord[i+1]):
+            py,quit()
+   
 #movement
 def movement(dir,snakeCoord):
     head = snakeCoord[0]
@@ -121,11 +130,5 @@ main()
 
 
 #TO-DO
-#Apple cant spawn in the snake
-#Borders
-#change apple location when the snake eats it
+#Point system
 
-'''usfuell stuff
-http://inventwithpython.com/pygame/chapter6.html
-FPSCLOCK = pygame.time.Clock()
-global FPSCLOCK, DISPLAYSURF, BASICFONT'''
