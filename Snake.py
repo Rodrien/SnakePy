@@ -74,8 +74,12 @@ def drawSnake(snakeCoord):
         py.draw.rect(screen,(0,255,0),snakeRect)
 
 def drawApple(pos,snakeCoord):
-    applerect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
-    py.draw.rect(screen,(255,0,0),applerect)
+    x = pos['x']*blockSize
+    y = pos['y']*blockSize
+    appleImg = py.image.load("./Logos/apple25.png")
+    screen.blit(appleImg,(x+2,y+1))
+    #applerect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
+    #py.draw.rect(screen,(255,0,0),applerect)
 
 def drawPoints(points):
     myfont = py.font.SysFont('Comic Sans MS', 30)
@@ -91,7 +95,6 @@ def point(apple,snakeCoord):
         snakeCoord.insert(0,apple)
         fixBlock(apple)
         apple = getRandom()
-    #add point
     return apple
 
 #colisions
@@ -141,4 +144,3 @@ def getRandom():
 
 #run main 
 main()
-
