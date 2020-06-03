@@ -17,7 +17,7 @@ def main():
     py.display.set_icon(logo)
     py.display.set_caption("Snake")
     
-    #starting snake Coord
+    #starting snake Coord 
     startX = random.randint(3,squareX-5)
     startY = random.randint(1,squareX)
     sCoord = [{'x':startX,'y':startY},{'x':startX-1,'y':startY},{'x':startX-2,'y':startY}]
@@ -25,10 +25,15 @@ def main():
     #apple starting location
     apple = getRandom()
 
+    #starting points
+    global points
+    points = 0
+    py.font.init()
+
     #main loop
-    running = True
     direction = 'right'
     drawGrid()
+    running = True
     while running: 
         FPSCLOCK.tick(FPS)
         for event in py.event.get():
@@ -43,7 +48,8 @@ def main():
                     direction = 'left'
                 if event.key == py.K_RIGHT:
                     direction = 'right'
-        sCoord = movement(direction,sCoord)
+        sCoord = movement(direction,sCoord) #snake coordinates
+        drawPoints(points)
         drawApple(apple,sCoord)
         drawSnake(sCoord)
         colide(sCoord)
@@ -52,30 +58,36 @@ def main():
         for coord in sCoord:
             if(apple == coord):
                 apple = getRandom()
-
         py.display.update()
+        if(points == 400):
+            running = False
 
-#draw grid
 def drawGrid():
     for x in range(screenX):
         for y in range(screenY):
             rect = py.Rect(x*blockSize,y*blockSize,blockSize,blockSize)
             py.draw.rect(screen,(200, 200, 200),rect,1)
 
-#draw snake
 def drawSnake(snakeCoord):
     for coord in snakeCoord:    
         snakeRect = py.Rect(coord['x']*blockSize,coord['y']*blockSize,blockSize,blockSize)
         py.draw.rect(screen,(0,255,0),snakeRect)
 
-#draw apple
 def drawApple(pos,snakeCoord):
     applerect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
     py.draw.rect(screen,(255,0,0),applerect)
 
-#point
+def drawPoints(points):
+    myfont = py.font.SysFont('Comic Sans MS', 30)
+    text = myfont.render('Points: ' + str(points), False, (255,255,0))
+    fixBlock({'x':19,'y':0})
+    screen.blit(text,(500,10))
+
+#control points and apple spawn
 def point(apple,snakeCoord):
+    global points
     if(apple == snakeCoord[0]):
+        points = points + 1
         snakeCoord.insert(0,apple)
         fixBlock(apple)
         apple = getRandom()
@@ -93,7 +105,7 @@ def colide(snakeCoord):
         if (head == snakeCoord[i+1]):
             py,quit()
    
-#movement
+#control movement
 def movement(dir,snakeCoord):
     head = snakeCoord[0]
     x = head['x']
@@ -117,7 +129,9 @@ def movement(dir,snakeCoord):
 
 def fixBlock(pos):
     rect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
-    py.draw.rect(screen,(200, 200, 200),rect,1)
+    py.draw.rect(screen,(0, 0, 0),rect)
+    rect2 = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
+    py.draw.rect(screen,(200, 200, 200),rect2,1)
 
 #get random Location
 def getRandom():
@@ -127,8 +141,4 @@ def getRandom():
 
 #run main 
 main()
-
-
-#TO-DO
-#Point system
 

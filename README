@@ -1,8 +1,9 @@
 Snake game 2/6/2020
 
 Future updates:
-Add Menu/Options
-Color selector or fruit icon
+- Add Menu/Options
+- Color selector
+- fruit icon
 
 Made with:
 Python3 and PyGame
