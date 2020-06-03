@@ -13,7 +13,7 @@ screen = py.display.set_mode((screenX,screenY))
 
 def main():
     #load logo and set window name
-    logo = py.image.load("./Logos/snake64.png")
+    logo = py.image.load("./Icons/snake64.png")
     py.display.set_icon(logo)
     py.display.set_caption("Snake")
     
@@ -76,7 +76,7 @@ def drawSnake(snakeCoord):
 def drawApple(pos,snakeCoord):
     x = pos['x']*blockSize
     y = pos['y']*blockSize
-    appleImg = py.image.load("./Logos/apple25.png")
+    appleImg = py.image.load("./Icons/apple25.png")
     screen.blit(appleImg,(x+2,y+1))
     #applerect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
     #py.draw.rect(screen,(255,0,0),applerect)
@@ -140,7 +140,7 @@ def fixBlock(pos):
 def getRandom():
     x = random.randint(0,squareX-1)
     y = random.randint(0,squareX-1)
-    return {'x':x,'y':y} #returns de pair x y
+    return {'x':x,'y':y} #returns the pair x y
 
 #run main 
 main()
