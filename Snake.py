@@ -57,7 +57,7 @@ def game():
         drawPoints(points)
         drawApple(apple,sCoord)
         drawSnake(sCoord)
-        colide(sCoord)
+        running = colide(sCoord)
         apple = point(apple,sCoord)
         #controlls if apple coordinates is in snake
         for coord in sCoord:
@@ -72,18 +72,15 @@ def menu():
     text = myfont.render('SnakePY!', False, (255,150,20))
     myfont2 = py.font.SysFont('Comic Sans MS', 50)
     text2 = myfont2.render('Enter to play', False, (255,250,20))
-    
-    #butt0 = py.Rect(20,0,300,150)
-    #py.draw.rect(screen,(255,0,0),butt0)
 
     #main loop
-    running = True
-    while running: 
-        FPSCLOCK.tick(FPS)
+    run = True
+    while run: 
         py.display.update()
         for event in py.event.get():
             if event.type == py.QUIT:
-                running = False
+                py.quit()
+                exit()
             if event.type == py.KEYDOWN:
                 if event.key == py.K_DOWN: #use up and down for selecting play/options
                     pass
@@ -92,8 +89,8 @@ def menu():
                 if event.key == py.K_RETURN:
                     running = False
                     game()
-        screen.blit(text,(50,30))
-        screen.blit(text2,(50,85))
+        screen.blit(text,(int(screenX/2 - text.get_width()/2),int(screenX/2) - 60))
+        screen.blit(text2,(int(screenX/2 - text2.get_width()/2),int(screenX/2)))
 
 #colisions
 def colide(snakeCoord):
@@ -101,12 +98,11 @@ def colide(snakeCoord):
     x = head['x']
     y = head['y']
     if(x > 19 or y > 19 or x < 0 or y < 0):
-        py.quit()
-        exit()
+        return False
     for i in range(len(snakeCoord)-1):
         if (head == snakeCoord[i+1]):
-            py.quit()
-            exit()
+            return False
+    return True
 
 def drawGrid():
     for x in range(screenX):
@@ -124,8 +120,6 @@ def drawApple(pos,snakeCoord):
     y = pos['y']*blockSize
     appleImg = py.image.load("./Icons/apple25.png")
     screen.blit(appleImg,(x+2,y+1))
-    #applerect = py.Rect(pos['x']*blockSize,pos['y']*blockSize,blockSize,blockSize)
-    #py.draw.rect(screen,(255,0,0),applerect)
 
 def drawPoints(points):
     myfont = py.font.SysFont('Comic Sans MS', 30)
