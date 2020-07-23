@@ -12,16 +12,15 @@ screenY = 600
 blockSize = 30
 squareX = int(600/blockSize) #how many squares in each line
 
-#load logo and set window name and background
+#load logo and set window name and background color
 logo = py.image.load("./Icons/snake64.png")
 py.display.set_icon(logo)
 py.display.set_caption("Snake Game")
 screen = py.display.set_mode((screenX,screenY))
-background = py.image.load("./background.png")
-screen.blit(background,(0,0))
+screen.fill((255,253,208))
 
 def game():    
-    screen.blit(background,(0,0))
+    screen.fill((255,253,208))
     #starting snake Coord 
     startX = random.randint(3,squareX-5)
     startY = random.randint(1,squareX)
@@ -36,7 +35,7 @@ def game():
 
     #main loop
     direction = 'right'
-    drawGrid()
+    #drawGrid()
     running = True
     while running: 
         FPSCLOCK.tick(FPS)
@@ -45,15 +44,19 @@ def game():
                 running = False
             if event.type == py.KEYDOWN:
                 if event.key == py.K_DOWN:
-                    direction = 'down'
+                    if direction != 'up':
+                        direction = 'down'
                 if event.key == py.K_UP:
-                    direction = 'up'
+                    if direction != 'down':
+                        direction = 'up'
                 if event.key == py.K_LEFT:
-                    direction = 'left'
+                    if direction != 'right':
+                        direction = 'left'
                 if event.key == py.K_RIGHT:
-                    direction = 'right'
+                    if direction != 'left':
+                        direction = 'right'
         sCoord = movement(direction,sCoord) #snake coordinates
-        screen.blit(background,(0,0))
+        screen.fill((255,253,208))
         drawPoints(points)
         drawApple(apple,sCoord)
         drawSnake(sCoord)
@@ -69,9 +72,9 @@ def game():
 
 def menu():
     myfont = py.font.SysFont('Comic Sans MS', 80)
-    text = myfont.render('SnakePY!', False, (255,150,20))
+    text = myfont.render('SnakePY!', False, (0,0,0))
     myfont2 = py.font.SysFont('Comic Sans MS', 50)
-    text2 = myfont2.render('Enter to play', False, (255,250,20))
+    text2 = myfont2.render('Enter to play', False, (0,0,0))
 
     #main loop
     run = True
@@ -113,7 +116,7 @@ def drawGrid():
 def drawSnake(snakeCoord):
     for coord in snakeCoord:    
         snakeRect = py.Rect(coord['x']*blockSize,coord['y']*blockSize,blockSize,blockSize)
-        py.draw.rect(screen,(0,255,0),snakeRect)
+        py.draw.rect(screen,(135,206,235),snakeRect)
 
 def drawApple(pos,snakeCoord):
     x = pos['x']*blockSize
@@ -123,7 +126,7 @@ def drawApple(pos,snakeCoord):
 
 def drawPoints(points):
     myfont = py.font.SysFont('Comic Sans MS', 30)
-    text = myfont.render('Points: ' + str(points), False, (255,255,0))
+    text = myfont.render('Points: ' + str(points), False, (0,0,0))
     #fixBlock({'x':19,'y':0})
     screen.blit(text,(500,10))
 
